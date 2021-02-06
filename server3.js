@@ -98,23 +98,18 @@ store.putContainer(timeConInfo, false)
         }
     });*/
 
-let time_series;
-store.putContainer(timeConInfo, false)
+var timeseries;
+store.getContainer("SensorRateLast")
+    .then(ts => {
+        timeseries = ts;
+        query = ts.query("select * from point01 where not active and voltage > 50");
+        return query.fetch();
+    })
     .then(rowset => {
+        var row;
         while (rowset.hasNext()) {
             var row = rowset.next();
             console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
         }
-    })
-    .catch(err => {
-        if (err.constructor.name == "GSException") {
-            for (var i = 0; i < err.getErrorStackSize(); i++) {
-                console.log("[", i, "]");
-                console.log(err.getErrorCode(i));
-                console.log(err.getMessage(i));
-            }
-        } else {
-                console.log(err);
-    }
-});
+    });
     
