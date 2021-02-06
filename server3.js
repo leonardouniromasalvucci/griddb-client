@@ -98,11 +98,11 @@ store.putContainer(timeConInfo, false)
         }
     });*/
 
-var timeseries;
+var time_series;
 store.getContainer("SensorRateLast")
     .then(ts => {
-        timeseries = ts;
-        query = ts.query("select * from point01 where not active and voltage > 50");
+        time_series = ts;
+        query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
         return query.fetch();
     })
     .then(rowset => {
