@@ -111,5 +111,16 @@ store.getContainer("SensorRateLast")
             var row = rowset.next();
             console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
         }
+    })
+    .catch(err => {
+        if (err.constructor.name == "GSException") {
+            for (var i = 0; i < err.getErrorStackSize(); i++) {
+                console.log("[", i, "]");
+                console.log(err.getErrorCode(i));
+                console.log(err.getMessage(i));
+            }
+        } else {
+            console.log(err);
+        }
     });
     
