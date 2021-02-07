@@ -99,7 +99,7 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
   };*/
   
 
-const getQueryData = () => {
+/*const getQueryData = () => {
     return [
       {
         "target":"value",
@@ -109,11 +109,11 @@ const getQueryData = () => {
         ]
       }
     ]
-  };
+  };*/
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
-    let getQueryData = [];
+    let data = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -125,12 +125,11 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             while (rowset.hasNext()) {
                 var row = rowset.next();
                 var vv = JSON.parse(row[1].toString())
-                getQueryData.push('{"target":"'+vv.id+'","datapoints":['+vv.value+','+row[0]+']]}')
+                data.push('{"target":"'+vv.id+'","datapoints":['+vv.value+','+row[0]+']]}')
                 //var v = row[1].toString();
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
                 
             }
-            let data = getQueryData();
             res.status(200).send(data);
         })
         .catch(err => {
