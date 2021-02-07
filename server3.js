@@ -119,8 +119,8 @@ function toTimestamp(strDate){
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     let data = [];
-    //let dd = getQueryData()
-    //console.log(dd)
+    let dd = getQueryData()
+    console.log(dd)
     //var ss = "["
     store.getContainer("SensorRateLast")
         .then(ts => {
