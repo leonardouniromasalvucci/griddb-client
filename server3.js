@@ -35,7 +35,7 @@ module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get the last hour
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)");
             return query.fetch();
         })
         .then(rowset => {
@@ -113,22 +113,22 @@ const getQueryData = () => {
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
-    //let data;
+    let getQueryData = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -10)");
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -20)"); //get last 10 minutes
             return query.fetch();
         })
         .then(rowset => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                var v = row[1].toString();
+                var vv = JSON.parse(row[1].toString())
+                getQueryData.push('{"target":"'+vv.id+'","datapoints":['+vv.value+','+row[0]+']]}')
+                //var v = row[1].toString();
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                var pp = JSON.parse(v)
-                console.log(pp.id)
-                console.log(pp.value)
+                
             }
             let data = getQueryData();
             res.status(200).send(data);
@@ -144,9 +144,6 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 console.log(err);
             }
         });
-        //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
-        //let data = getQueryData();
-        //res.status(200).send(data);
 });
 
 app.listen(8080)
