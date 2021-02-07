@@ -59,11 +59,12 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
                 console.log(err);
             }
         });*/
-        let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+        //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+        let data = [];
         res.status(200).send(data);
 });
 
-const getQueryData = () => {
+/*const getQueryData = () => {
     return [
       {
         "target":"pps in",
@@ -94,13 +95,24 @@ const getQueryData = () => {
         ]
       }
     ]
+  };*/
+  
+
+const getQueryData = () => {
+    return [
+      {
+        "target":"value",
+        "datapoints":[
+          [622,1450754160000],
+          [365,1450754220000]
+        ]
+      }
+    ]
   };
-  
-  
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
-    /*let data;
+    let data;
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -111,9 +123,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                //data.push(row[1])
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                res.status(200).send(row[1]);
             }
             res.status(200).send(row[1]);
         })
@@ -127,7 +137,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             } else {
                 console.log(err);
             }
-        });*/
+        });
         let data = getQueryData();
         res.status(200).send(data);
 });
