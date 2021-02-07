@@ -4,8 +4,7 @@ const numCPUs = require('os').cpus().length;
 var griddb = require('griddb_node');
 var fs = require('fs');
 const express = require('express')
-const app = express()
-
+var app = require('express')()
 // our Cluster's credentials
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
@@ -26,6 +25,7 @@ var timeConInfo = new griddb.ContainerInfo({
     'type': griddb.ContainerType.TIME_SERIES, 'rowKey': true
 });
 
+// Define the HTTP server
 module.exports = app.get('/myEndpoint', async (req, res) => {
     res.status(200).send('successfully tested');
 });
@@ -34,6 +34,8 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
     let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
     res.status(200).send(data);
 });
+
+app.listen(8080)
 
 var time_series;
 store.getContainer("SensorRateLast")
