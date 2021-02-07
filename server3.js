@@ -31,9 +31,9 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
 });
   
 module.exports = app.post('/myEndpoint/search', async (req, res) => {      
-    var time_series;
+    //var time_series;
     //let data;
-    store.getContainer("SensorRateLast")
+    /*store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
             query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
@@ -58,8 +58,43 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
             } else {
                 console.log(err);
             }
-        });
-    //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+        });*/
+    let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+    res.status(200).send(data);
+});
+
+module.exports = app.post('/myEndpoint/query', async (req, res) => {      
+    var time_series;
+    /*let data;
+    store.getContainer("SensorRateLast")
+        .then(ts => {
+            time_series = ts;
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
+            return query.fetch();
+        })
+        .then(rowset => {
+            var row;
+            while (rowset.hasNext()) {
+                var row = rowset.next();
+                //data.push(row[1])
+                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                res.status(200).send(row[1]);
+            }
+            res.status(200).send(row[1]);
+        })
+        .catch(err => {
+            if (err.constructor.name == "GSException") {
+                for (var i = 0; i < err.getErrorStackSize(); i++) {
+                    console.log("[", i, "]");
+                    console.log(err.getErrorCode(i));
+                    console.log(err.getMessage(i));
+                }
+            } else {
+                console.log(err);
+            }
+        });*/
+        let data = [ { "text": "upper_25", "value": 6}, { "text": "upper_75", "value": 1} ];
+        res.status(200).send(data);
 });
 
 app.listen(8080)
