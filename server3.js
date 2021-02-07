@@ -63,6 +63,25 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
     res.status(200).send(data);
 });
 
+const getQueryData = () => {
+    return [
+      {
+        "id":"4325425",
+        "value": 1.243
+      },
+      {
+        "id":"3542545",
+        "value": 1.121
+      },
+      {
+        "id":"123425",
+        "value": 1.567
+      },
+      
+    ]
+  };
+  
+
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     /*let data;
@@ -93,7 +112,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 console.log(err);
             }
         });*/
-        let data = [ { "text": "upper_25", "value": 6}, { "text": "upper_75", "value": 1} ];
+        let data = getQueryData();
         res.status(200).send(data);
 });
 
