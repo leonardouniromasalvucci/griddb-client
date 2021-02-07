@@ -59,26 +59,43 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
                 console.log(err);
             }
         });*/
-    let data = [{ "text": "4325425", "value": 1.243}, { "text": "4325425", "value": 1.143}];
-    res.status(200).send(data);
+        let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+        res.status(200).send(data);
 });
 
 const getQueryData = () => {
     return [
       {
-        "text":"4325425",
-        "value": 1.243
+        "target":"pps in",
+        "datapoints":[
+          [622,1450754160000],
+          [365,1450754220000]
+        ]
       },
       {
-        "text":"3542545",
-        "value": 1.121
+        "target":"pps out",
+        "datapoints":[
+          [861,1450754160000],
+          [767,1450754220000]
+        ]
       },
       {
-        "text":"123425",
-        "value": 1.567
-      }      
+        "target":"errors out",
+        "datapoints":[
+          [861,1450754160000],
+          [767,1450754220000]
+        ]
+      },
+      {
+        "target":"errors in",
+        "datapoints":[
+          [861,1450754160000],
+          [767,1450754220000]
+        ]
+      }
     ]
   };
+  
   
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
