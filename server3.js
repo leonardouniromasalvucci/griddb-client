@@ -112,7 +112,7 @@ const getQueryData = () => {
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
-    var data = [];
+    //var datas = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
