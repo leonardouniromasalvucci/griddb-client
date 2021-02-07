@@ -33,7 +33,6 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
 
 module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
     var time_series;
-    //var datas = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -46,9 +45,8 @@ module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
                 var row = rowset.next();
                 console.log(row);
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                //data.push({"target":"", "datapoints"})
             }
-            //res.status(200).send(data);
+            res.status(200).send('successfully tested');
         })
         .catch(err => {
             if (err.constructor.name == "GSException") {
@@ -61,7 +59,6 @@ module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
                 console.log(err);
             }
         });
-    res.status(200).send('successfully tested');
 });
   
 module.exports = app.post('/myEndpoint/search', async (req, res) => {      
