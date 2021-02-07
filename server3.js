@@ -5,7 +5,8 @@ var griddb = require('griddb_node');
 var fs = require('fs');
 const express = require('express')
 var app = require('express')()
-// our Cluster's credentials
+
+
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
     "notificationMember":"10.0.0.17:10001,10.0.0.53:10001",
@@ -14,7 +15,7 @@ var store = factory.getStore({
     "password": "admin"
 });
 
-// Timeseries container. TIMESTAMP is the rowKey (JavaScript OBJ)
+
 var timeConInfo = new griddb.ContainerInfo({
     'name': "SensorRateLast",
     'columnInfoList': [
@@ -25,40 +26,40 @@ var timeConInfo = new griddb.ContainerInfo({
     'type': griddb.ContainerType.TIME_SERIES, 'rowKey': true
 });
 
-// Define the HTTP server
 module.exports = app.get('/myEndpoint', async (req, res) => {
     res.status(200).send('successfully tested');
 });
   
 module.exports = app.post('/myEndpoint/search', async (req, res) => {      
-    let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
-    res.status(200).send(data);
+    var time_series;
+    let data;
+    store.getContainer("SensorRateLast")
+        .then(ts => {
+            time_series = ts;
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
+            return query.fetch();
+        })
+        .then(rowset => {
+            var row;
+            while (rowset.hasNext()) {
+                var row = rowset.next();
+                data.push(row[1])
+                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                res.status(200).send(data);
+            }
+        })
+        .catch(err => {
+            if (err.constructor.name == "GSException") {
+                for (var i = 0; i < err.getErrorStackSize(); i++) {
+                    console.log("[", i, "]");
+                    console.log(err.getErrorCode(i));
+                    console.log(err.getMessage(i));
+                }
+            } else {
+                console.log(err);
+            }
+        });
+    //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
 });
 
 app.listen(8080)
-
-var time_series;
-store.getContainer("SensorRateLast")
-    .then(ts => {
-        time_series = ts;
-        query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
-        return query.fetch();
-    })
-    .then(rowset => {
-        var row;
-        while (rowset.hasNext()) {
-            var row = rowset.next();
-            console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-        }
-    })
-    .catch(err => {
-        if (err.constructor.name == "GSException") {
-            for (var i = 0; i < err.getErrorStackSize(); i++) {
-                console.log("[", i, "]");
-                console.log(err.getErrorCode(i));
-                console.log(err.getMessage(i));
-            }
-        } else {
-            console.log(err);
-        }
-    });
