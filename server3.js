@@ -32,7 +32,7 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
   
 module.exports = app.post('/myEndpoint/search', async (req, res) => {      
     var time_series;
-    let data;
+    //let data;
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -43,9 +43,9 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                data.push(row[1])
+                //data.push(row[1])
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                res.status(200).send(data);
+                res.status(200).send(row[1]);
             }
         })
         .catch(err => {
