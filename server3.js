@@ -59,25 +59,24 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
                 console.log(err);
             }
         });*/
-    let data = [ { "id": "4325425", "value": 1.243}, { "id": "4325425", "value": 1.143} ];
+    let data = [{ "text": "4325425", "value": 1.243}, { "text": "4325425", "value": 1.143}];
     res.status(200).send(data);
 });
 
 const getQueryData = () => {
     return [
       {
-        "id":"4325425",
+        "text":"4325425",
         "value": 1.243
       },
       {
-        "id":"3542545",
+        "text":"3542545",
         "value": 1.121
       },
       {
-        "id":"123425",
+        "text":"123425",
         "value": 1.567
-      },
-      
+      }      
     ]
   };
   
