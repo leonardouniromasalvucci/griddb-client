@@ -59,7 +59,7 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
                 console.log(err);
             }
         });*/
-    let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+    let data = [ { "id": "4325425", "value": 1.243}, { "id": "4325425", "value": 1.143} ];
     res.status(200).send(data);
 });
 
