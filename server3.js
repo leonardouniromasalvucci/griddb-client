@@ -99,7 +99,7 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
   };*/
   
 
-/*const getQueryData = () => {
+const getQueryData = () => {
     return [
       {
         "target":"value",
@@ -109,11 +109,13 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
         ]
       }
     ]
-  };*/
+  };
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     let data = [];
+    let dd = getQueryData()
+    console.log(dd)
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
