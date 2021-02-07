@@ -26,7 +26,13 @@ var timeConInfo = new griddb.ContainerInfo({
     'type': griddb.ContainerType.TIME_SERIES, 'rowKey': true
 });
 
-var time_series;
+
+module.exports = app.get('/myEndpoint', async (req, res) => {
+    res.status(200).send('successfully tested');
+});
+
+module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
+    var time_series;
     //var datas = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
@@ -55,8 +61,6 @@ var time_series;
                 console.log(err);
             }
         });
-        
-module.exports = app.get('/myEndpoint', async (req, res) => {
     res.status(200).send('successfully tested');
 });
   
