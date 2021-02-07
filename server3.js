@@ -26,6 +26,36 @@ var timeConInfo = new griddb.ContainerInfo({
     'type': griddb.ContainerType.TIME_SERIES, 'rowKey': true
 });
 
+var time_series;
+    //var datas = [];
+    store.getContainer("SensorRateLast")
+        .then(ts => {
+            time_series = ts;
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get the last hour
+            return query.fetch();
+        })
+        .then(rowset => {
+            var row;
+            while (rowset.hasNext()) {
+                var row = rowset.next();
+                console.log(row);
+                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                //data.push({"target":"", "datapoints"})
+            }
+            //res.status(200).send(data);
+        })
+        .catch(err => {
+            if (err.constructor.name == "GSException") {
+                for (var i = 0; i < err.getErrorStackSize(); i++) {
+                    console.log("[", i, "]");
+                    console.log(err.getErrorCode(i));
+                    console.log(err.getMessage(i));
+                }
+            } else {
+                console.log(err);
+            }
+        });
+        
 module.exports = app.get('/myEndpoint', async (req, res) => {
     res.status(200).send('successfully tested');
 });
@@ -111,35 +141,6 @@ const getQueryData = () => {
   };
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
-    var time_series;
-    //var datas = [];
-    store.getContainer("SensorRateLast")
-        .then(ts => {
-            time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get the last hour
-            return query.fetch();
-        })
-        .then(rowset => {
-            var row;
-            while (rowset.hasNext()) {
-                var row = rowset.next();
-                console.log(row);
-                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                //data.push({"target":"", "datapoints"})
-            }
-            //res.status(200).send(data);
-        })
-        .catch(err => {
-            if (err.constructor.name == "GSException") {
-                for (var i = 0; i < err.getErrorStackSize(); i++) {
-                    console.log("[", i, "]");
-                    console.log(err.getErrorCode(i));
-                    console.log(err.getMessage(i));
-                }
-            } else {
-                console.log(err);
-            }
-        });
         let data = getQueryData();
         res.status(200).send(data);
 });
