@@ -6,13 +6,6 @@ var fs = require('fs');
 const express = require('express')
 var app = require('express')()
 
-/*
-const json = '{"id":"2", "value":1.887}';
-
-var pp = JSON.parse(json)
-console.log(pp.id)*/
-
-
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
     "notificationMember":"10.0.0.17:10001,10.0.0.53:10001",
@@ -20,7 +13,6 @@ var store = factory.getStore({
     "username": "admin",
     "password": "admin"
 });
-
 
 var timeConInfo = new griddb.ContainerInfo({
     'name': "SensorRateLast",
@@ -39,6 +31,7 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
 
 module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     var time_series;
+    var all_data = [];
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -49,9 +42,10 @@ module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
+                all_data.push(row)
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
             }
-            res.status(200).send(row);
+            res.status(200).send(all_data);
         })
         .catch(err => {
             if (err.constructor.name == "GSException") {
@@ -123,7 +117,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTES, NOW(), -10)");
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -10)");
             return query.fetch();
         })
         .then(rowset => {
