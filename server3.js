@@ -36,7 +36,7 @@ module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get the last hour
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)"); //get the last hour
             return query.fetch();
         })
         .then(rowset => {
