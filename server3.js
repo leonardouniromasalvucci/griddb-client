@@ -119,8 +119,8 @@ function toTimestamp(strDate){
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     let data = [];
-    //let dd = getQueryData()
-    //console.log(dd)
+    let dd = getQueryData()
+    console.log(dd)
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
@@ -134,7 +134,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 var vv = JSON.parse(row[1].toString())
                 console.log('[{"target":"'+vv.id+'", "datapoints":[[' + vv.value + ',' + toTimestamp(row[0]) + ']]}]')
                 data.push('[{"target":"'+vv.id+'", "datapoints":[[' + vv.value + ',' + toTimestamp(row[0]) + ']]}]')
-                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                //console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
                 
             }
             res.status(200).send(data);
