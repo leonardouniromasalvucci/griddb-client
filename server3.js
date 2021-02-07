@@ -6,6 +6,12 @@ var fs = require('fs');
 const express = require('express')
 var app = require('express')()
 
+/*
+const json = '{"id":"2", "value":1.887}';
+
+var pp = JSON.parse(json)
+console.log(pp.id)*/
+
 
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
@@ -31,7 +37,7 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
     res.status(200).send('successfully tested');
 });
 
-module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
+module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     var time_series;
     store.getContainer("SensorRateLast")
         .then(ts => {
@@ -43,10 +49,9 @@ module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                console.log(row);
                 console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
             }
-            res.status(200).send('successfully tested');
+            res.status(200).send(row);
         })
         .catch(err => {
             if (err.constructor.name == "GSException") {
@@ -62,35 +67,6 @@ module.exports = app.get('/myEndpoint/dammi', async (req, res) => {
 });
   
 module.exports = app.post('/myEndpoint/search', async (req, res) => {      
-    //var time_series;
-    //let data;
-    /*store.getContainer("SensorRateLast")
-        .then(ts => {
-            time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -6)");
-            return query.fetch();
-        })
-        .then(rowset => {
-            var row;
-            while (rowset.hasNext()) {
-                var row = rowset.next();
-                //data.push(row[1])
-                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                res.status(200).send(row[1]);
-            }
-        })
-        .catch(err => {
-            if (err.constructor.name == "GSException") {
-                for (var i = 0; i < err.getErrorStackSize(); i++) {
-                    console.log("[", i, "]");
-                    console.log(err.getErrorCode(i));
-                    console.log(err.getMessage(i));
-                }
-            } else {
-                console.log(err);
-            }
-        });*/
-        //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
         let data = [];
         res.status(200).send(data);
 });
@@ -142,8 +118,41 @@ const getQueryData = () => {
   };
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
-        let data = getQueryData();
-        res.status(200).send(data);
+    var time_series;
+    //let data;
+    store.getContainer("SensorRateLast")
+        .then(ts => {
+            time_series = ts;
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTES, NOW(), -10)");
+            return query.fetch();
+        })
+        .then(rowset => {
+            var row;
+            while (rowset.hasNext()) {
+                var row = rowset.next();
+                var v = row[1].toString();
+                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                var pp = JSON.parse(v)
+                console.log(pp.id)
+                console.log(pp.value)
+            }
+            let data = getQueryData();
+            res.status(200).send(data);
+        })
+        .catch(err => {
+            if (err.constructor.name == "GSException") {
+                for (var i = 0; i < err.getErrorStackSize(); i++) {
+                    console.log("[", i, "]");
+                    console.log(err.getErrorCode(i));
+                    console.log(err.getMessage(i));
+                }
+            } else {
+                console.log(err);
+            }
+        });
+        //let data = [ { "text": "upper_25", "value": 1}, { "text": "upper_75", "value": 2} ];
+        //let data = getQueryData();
+        //res.status(200).send(data);
 });
 
 app.listen(8080)
