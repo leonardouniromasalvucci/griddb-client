@@ -132,8 +132,8 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             while (rowset.hasNext()) {
                 var row = rowset.next();
                 var vv = JSON.parse(row[1].toString())
-                console.log('[{"target":"'+vv.id+'", "datapoints":[[' + vv.value + ',' + toTimestamp(row[0]) + ']]}]')
-                data.push('[{"target":"'+vv.id+'", "datapoints":[[' + vv.value + ',' + toTimestamp(row[0]) + ']]}]')
+                console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
+                data.push("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
                 //console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
                 
             }
