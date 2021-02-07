@@ -139,6 +139,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 
             }
             var data = "[{target:'1', datapoints:[[1.804, 1612726246]]}]"
+            console.log(data)
             res.status(200).send(data);
         })
         .catch(err => {
