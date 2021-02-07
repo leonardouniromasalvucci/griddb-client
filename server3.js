@@ -111,6 +111,11 @@ const getQueryData = () => {
     ]
   };
 
+function toTimestamp(strDate){
+  var datum = Date.parse(strDate);
+  return datum/1000;
+}
+
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     let data = [];
