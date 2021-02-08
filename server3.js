@@ -135,7 +135,7 @@ function append_value(x, id, value){
         break;
       }
     }
-  return x
+  //return x
 }
 
 function toTimestamp(strDate){
