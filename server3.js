@@ -127,7 +127,7 @@ console.log(data)
 
 function append_value(x, id, value){
   if(x[id] == undefined){
-    data.push({"target":id, "datapoints":[value]});
+    x.push({"target":id, "datapoints":[value]});
   }else{
     for (var i in x) {
       if (x[i].target == id) {
