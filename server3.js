@@ -125,6 +125,18 @@ console.log(data)
 
 */
 
+function append_value(x, id, value){
+  if(x[id] == undefined){
+    data.push({"target":id, "datapoints":[value]});
+  }else{
+    for (var i in x) {
+      if (x[i].target == id) {
+        x[i].datapoints.push(value);
+        break;
+      }
+    }
+  }
+}
 
 function toTimestamp(strDate){
   var datum = Date.parse(strDate);
@@ -149,6 +161,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 //append_value(data, "2", [16, 3466])
                 var v = JSON.parse(row[1].toString())
                 append_value(data, v.id, [v.value, toTimestamp(row[0])])
+                console.log(data)
                 //console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
                 //data.push("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
                 //console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
