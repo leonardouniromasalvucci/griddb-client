@@ -35,7 +35,7 @@ module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)");
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)");//(HOUR, NOW(), -1)");
             return query.fetch();
         })
         .then(rowset => {
@@ -135,7 +135,7 @@ function append_value(x, id, value){
         break;
       }
     }
-  }
+  return x
 }
 
 function toTimestamp(strDate){
@@ -151,7 +151,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
     store.getContainer("SensorRateLast")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -20)"); //get last 10 minutes
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
             return query.fetch();
         })
         .then(rowset => {
@@ -163,8 +163,8 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 
                 var v = JSON.parse(row[1].toString())
                 //console.log(v)
-                append_value(data, v.id, [v.value, toTimestamp(row[0])])
-                //console.log(data)
+                data = append_value(data, v.id, [v.value, toTimestamp(row[0])])
+                console.log(data)
                 
                 //console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
                 //data.push("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
