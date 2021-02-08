@@ -65,7 +65,7 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
         res.status(200).send(data);
 });
 
-const getQueryData = () => {
+/*const getQueryData = () => {
     return [
       {
         "target":"pps in",
@@ -96,7 +96,7 @@ const getQueryData = () => {
         ]
       }
     ]
-  };
+  };*/
 
 
 /*
@@ -145,7 +145,7 @@ function toTimestamp(strDate){
 
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
-    var data = getQueryData()
+    var data = []
     ///let dd = getQueryData()
     //console.log(dd)
     store.getContainer("SensorRateLast")
@@ -158,13 +158,13 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                console.log(row)
+                //console.log(row)
                 //append_value(data, "2", [16, 3466])
                 
-                /*var v = JSON.parse(row[1].toString())
-                console.log(v)
+                var v = JSON.parse(row[1].toString())
+                //console.log(v)
                 append_value(data, v.id, [v.value, toTimestamp(row[0])])
-                console.log(data)*/
+                //console.log(data)
                 
                 //console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
                 //data.push("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
