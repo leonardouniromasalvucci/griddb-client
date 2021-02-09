@@ -8,7 +8,7 @@ var app = require('express')()
 
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
-    "notificationMember":"10.0.0.28:10001,10.0.0.37:10001",
+    "notificationMember":"10.0.0.28:10001,10.0.0.37:10001,10.0.0.26:10001",
     "clusterName": "defaultCluster",
     "username": "admin",
     "password": "admin"
