@@ -66,66 +66,6 @@ module.exports = app.post('/myEndpoint/search', async (req, res) => {
         res.status(200).send(data);
 });
 
-/*const getQueryData = () => {
-    return [
-      {
-        "target":"pps in",
-        "datapoints":[
-          [622,1450754160000],
-          [365,1450754220000]
-        ]
-      },
-      {
-        "target":"pps out",
-        "datapoints":[
-          [861,1450754160000],
-          [767,1450754220000]
-        ]
-      },
-      {
-        "target":"errors out",
-        "datapoints":[
-          [861,1450754160000],
-          [767,1450754220000]
-        ]
-      },
-      {
-        "target":"errors in",
-        "datapoints":[
-          [861,1450754160000],
-          [767,1450754220000]
-        ]
-      }
-    ]
-  };*/
-
-
-/*
-
-var data = []
-data.push({"target":"1", "datapoints":[[[12,132566]]]});
-//console.log(data)
-
-function append_value(x, id, value){
-  if(x[id] == undefined){
-    data.push({"target":id, "datapoints":[value]});
-  }else{
-    for (var i in x) {
-      if (x[i].target == id) {
-        x[i].datapoints.push(value);
-        break;
-      }
-    }
-  }
-}
-
-r = append_value(data, "2", [16, 3466])
-r = append_value(data, "1", [78, 3546])
-r = append_value(data, "1", [56, 1234])
-console.log(data)
-
-*/
-
 function append_value(x, id, value){
   if(x[id] == undefined){
     x.push({"target":id, "datapoints":[value]});
@@ -148,8 +88,6 @@ function toTimestamp(strDate){
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     var data = []
-    ///let dd = getQueryData()
-    //console.log(dd)
     store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
@@ -160,11 +98,8 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                console.log(row)
-                //append_value(data, "2", [16, 3466])
-                
                 var v = JSON.parse(row[1].toString())
-                //console.log(v)
+                console.log(v)
                 data = append_value(data, v.id, [v.value, toTimestamp(row[0])])
                 console.log(data)
                 
