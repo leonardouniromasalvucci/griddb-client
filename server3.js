@@ -100,9 +100,9 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
                 var row = rowset.next();
                 //var id = JSON.parse(row[1].toString())
                 //var value = JSON.parse(row[2].toString())
-                console.log(row[1])
+                console.log(row[1].toString())
                 console.log(row[2])
-                data = append_value(data, v.id, [v.value, toTimestamp(row[0])])
+                data = append_value(data, row[1].toString(), [v.value, toTimestamp(row[0])])
                 console.log(data)
                 
                 //console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
