@@ -15,11 +15,12 @@ var store = factory.getStore({
 });
 
 var timeConInfo = new griddb.ContainerInfo({
-    'name': "SensorRateLast",
+    'name': "SensorVlues",
     'columnInfoList': [
-        ["timestamp", griddb.Type.TIMESTAMP],
-        ["sensorValue", griddb.Type.STRING],
-        ["topic", griddb.Type.STRING]
+      ["timestamp", griddb.Type.TIMESTAMP],
+      ["sensorId", griddb.Type.STRING],
+      ["sensorValue", griddb.Type.STRING],
+      ["topic", griddb.Type.STRING]
     ],
     'type': griddb.ContainerType.TIME_SERIES, 'rowKey': true
 });
@@ -32,10 +33,10 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
 module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     var time_series;
     var all_data = [];
-    store.getContainer("SensorRateLast")
+    store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)");//(HOUR, NOW(), -1)");
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -7)");//(HOUR, NOW(), -1)"), (MINUTE, NOW(), -5);
             return query.fetch();
         })
         .then(rowset => {
@@ -149,7 +150,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
     var data = []
     ///let dd = getQueryData()
     //console.log(dd)
-    store.getContainer("SensorRateLast")
+    store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
             query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
