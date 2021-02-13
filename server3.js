@@ -36,7 +36,7 @@ module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -16)");//(HOUR, NOW(), -1)"), (MINUTE, NOW(), -5);
+            query = time_series.query("select *")// where timestamp > TIMESTAMPADD(HOUR, NOW(), -16)");//(HOUR, NOW(), -1)"), (MINUTE, NOW(), -5);
             return query.fetch();
         })
         .then(rowset => {
