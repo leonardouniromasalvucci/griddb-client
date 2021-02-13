@@ -44,7 +44,7 @@ module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
             while (rowset.hasNext()) {
                 var row = rowset.next();
                 all_data.push(row)
-                console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
+                console.log("Time =", row[0], "Device ID = ", row[1].toString() , "Sensor Value =", row[2].toString(), "Topic =", row[3]);
             }
             res.status(200).send(all_data);
         })
