@@ -98,20 +98,8 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                //var id = JSON.parse(row[1].toString())
-                //var value = JSON.parse(row[2].toString())
-                console.log(row[1].toString())
-                console.log(row[2])
-                data = append_value(data, row[1].toString(), [v.value, toTimestamp(row[0])])
-                console.log(data)
-                
-                //console.log("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
-                //data.push("[{target:'"+vv.id+"', datapoints:[[" + vv.value + ", " + toTimestamp(row[0]) + "]]}]")
-                //console.log("Time =", row[0], "Sensor Value =", row[1].toString(), "Topic =", row[2]);
-                
+                data = append_value(data, row[1].toString(), [row[2], toTimestamp(row[0])])                
             }
-            //var data = "[{target:'1', datapoints:[[1.804, 1612726246]]}]"
-            //console.log(data)
             res.status(200).send(data);
         })
         .catch(err => {
