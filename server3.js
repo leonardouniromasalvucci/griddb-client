@@ -153,14 +153,14 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
     store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
+            query = time_series.query("select * ")//where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
             return query.fetch();
         })
         .then(rowset => {
             var row;
             while (rowset.hasNext()) {
                 var row = rowset.next();
-                //console.log(row)
+                console.log(row)
                 //append_value(data, "2", [16, 3466])
                 
                 var v = JSON.parse(row[1].toString())
