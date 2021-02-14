@@ -91,7 +91,7 @@ module.exports = app.post('/myEndpoint/query', async (req, res) => {
     store.getContainer("SensorVlues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * ")//where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get last 5 minutes
             return query.fetch();
         })
         .then(rowset => {
