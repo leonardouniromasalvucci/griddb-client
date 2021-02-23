@@ -8,7 +8,7 @@ var app = require('express')()
 
 var factory = griddb.StoreFactory.getInstance();
 var store = factory.getStore({
-    "notificationMember":"10.0.0.28:10001,10.0.0.37:10001,10.0.0.26:10001",
+    "notificationMember":"10.0.0.28:10001,10.0.0.37:10001,10.0.0.172:10001",
     "clusterName": "defaultCluster",
     "username": "admin",
     "password": "admin"
@@ -33,10 +33,10 @@ module.exports = app.get('/myEndpoint', async (req, res) => {
 module.exports = app.get('/myEndpoint/get_values', async (req, res) => {
     var time_series;
     var all_data = [];
-    store.getContainer("SensorVlues")
+    store.getContainer("SensorValues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select *")// where timestamp > TIMESTAMPADD(HOUR, NOW(), -16)");//(HOUR, NOW(), -1)"), (MINUTE, NOW(), -5);
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)");
             return query.fetch();
         })
         .then(rowset => {
@@ -88,10 +88,10 @@ function toTimestamp(strDate){
 module.exports = app.post('/myEndpoint/query', async (req, res) => {      
     var time_series;
     var data = []
-    store.getContainer("SensorVlues")
+    store.getContainer("SensorValues")
         .then(ts => {
             time_series = ts;
-            query = time_series.query("select * where timestamp > TIMESTAMPADD(HOUR, NOW(), -1)"); //get last 5 minutes
+            query = time_series.query("select * where timestamp > TIMESTAMPADD(MINUTE, NOW(), -5)"); //get last 5 minutes
             return query.fetch();
         })
         .then(rowset => {
